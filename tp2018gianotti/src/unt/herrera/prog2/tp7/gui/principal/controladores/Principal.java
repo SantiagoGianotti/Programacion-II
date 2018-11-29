@@ -59,18 +59,18 @@ public class Principal {
 		miGestorArea = GestorAreas.instanciar();
 		
 	//<editor-fold desc="Agregado de areas">
-	/*
+	
 	System.out.println(miGestorArea.nuevaArea("Software"));
 	System.out.println(miGestorArea.nuevaArea("Hardware"));
 	System.out.println(miGestorArea.nuevaArea("Sistemas Embebidos"));
 	System.out.println(miGestorArea.nuevaArea("Redes"));
 	System.out.println(miGestorArea.nuevaArea("Redes"));
-	*/
-        
-        
+	
+    /*    
         System.out.println("mandamos la gilada a un archivo");
         miGestorArea.leerAreas();
-        
+    */
+	
         ArrayList<Area> listaA1= new ArrayList<>();
         listaA1.add(miGestorArea.dameArea("Software"));
 		
