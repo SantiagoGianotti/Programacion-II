@@ -30,7 +30,16 @@ public interface IGestorPersonas {
     public String borrarProfesor(Profesor profesor);
     public String borrarAlumno(Alumno alumno);
     
-    
+    static public final String SEPARADOR = ";";
+	
+	static public final String ALUMNO = "ALUMNO";
+	static public final String PROFESOR = "PROFESOR";
+	
+	static public final String READ_SUCCESS = "La lectura de personas fue exitosa";
+	static public final String WRITE_SUCCESS = "La escritura de personas fue exitosa";
+	static public final String READ_FAIL = "La lectura de personas fallo";
+	static public final String WRITE_FAIL = "la escritura de personas fallo";
+	
     static public final String ERROR_MSG = "La persona no se pudo agregar.";
     static public final String SUCCESS_MSG = "la persona fue creada exitosamente.";
 	
