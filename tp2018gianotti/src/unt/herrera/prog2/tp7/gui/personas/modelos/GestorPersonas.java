@@ -291,8 +291,6 @@ public class GestorPersonas implements IGestorPersonas{
 			Persona miPersona;
 			String linea = null;
 			
-			System.out.println("escribiendo eprsonassss");
-			
 			//Guardo a los profesores y alumnos, utilizando ';' como separador y las constantes para diferenciar el tipo.
 			for( Persona i : listaPersonas){
 				
@@ -314,7 +312,6 @@ public class GestorPersonas implements IGestorPersonas{
 			
 			bfw.close();
 			return WRITE_SUCCESS;
-			
 		}
 		catch(IOException ex){
 			return WRITE_FAIL;
