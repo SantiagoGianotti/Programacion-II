@@ -5,6 +5,12 @@
  */
 package unt.herrera.prog2.tp7.gui.personas.modelos;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.GestorTrabajos;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.Trabajo;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.AlumnoEnTrabajo;
@@ -14,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.PatternSyntaxException;
 
 /**
  *
@@ -23,7 +30,7 @@ public class GestorPersonas implements IGestorPersonas{
     private static GestorPersonas gestor;
     private List<Persona> listaPersonas = new ArrayList<>();
 
-    private GestorPersonas(){}; // Constructor Privado// Constructor Privado// Constructor Privado// Constructor Privado
+    private GestorPersonas(){}; // Constructor Privado
     
     public static GestorPersonas instanciar(){
         
@@ -37,7 +44,7 @@ public class GestorPersonas implements IGestorPersonas{
     public String nuevoProfesor(String apellidos, String nombres, int dni, Cargo cargo) {
         Persona miProfesor;
 		
-		if( apellidos.isEmpty() || nombres.isEmpty() || dni <= 0 || cargo == null){ //Si los parametros no son correctos entonces error.
+		if( apellidos.isEmpty() || nombres.isEmpty() || dni <= 0 || cargo == null || apellidos.contains(SEPARADOR) || nombres.contains(SEPARADOR)){ //Si los parametros no son correctos entonces error.
 			return ERROR_MSG_PROFESOR;
 		}
 		
@@ -55,7 +62,8 @@ public class GestorPersonas implements IGestorPersonas{
     public String nuevoAlumno(String apellidos, String nombres, int dni, String cx) {
 		Alumno miAlumno;
 		
-		if( apellidos.isEmpty() || nombres.isEmpty() || dni <= 0 || cx.isEmpty()){
+		if( apellidos.isEmpty() || nombres.isEmpty() || dni <= 0 || cx.isEmpty() || apellidos.contains(SEPARADOR) || nombres.contains(SEPARADOR) || cx.contains(SEPARADOR)){
+			
 			return ERROR_MSG_ALUMNO;
 		}
 		
@@ -171,12 +179,12 @@ public class GestorPersonas implements IGestorPersonas{
 			return ERROR_MOD_PROFESOR;
 		}
 		
-		//Si algun parametro es nulo no lo modificamos.
-		if( apellidos != null && !apellidos.isEmpty() ){
+		//Si algun parametro es nulo no lo modificamos. Tambien verifico que las cadenas no contengan el separador.
+		if( apellidos != null && !apellidos.isEmpty() && !apellidos.contains(SEPARADOR)){
 			profesor.setApellidos(apellidos);
 		}
 		
-		if( nombres != null && !nombres.isEmpty() ){
+		if( nombres != null && !nombres.isEmpty() && !apellidos.contains(SEPARADOR)){
 			profesor.setNombres(nombres);
 		}
 		
@@ -196,17 +204,17 @@ public class GestorPersonas implements IGestorPersonas{
 		}
 		
 		//Si algun parametro es nulo no lo modificamos.
-		if( apellidos != null && !apellidos.isEmpty()){
+		if( apellidos != null && !apellidos.isEmpty() && !apellidos.contains(SEPARADOR)){
 			alumno.setApellidos(apellidos);
 		}
 
-		if( nombres != null && !nombres.isEmpty() ){
+		if( nombres != null && !nombres.isEmpty() && !nombres.contains(SEPARADOR)){
 			alumno.setNombres(nombres);
 		}
 		
-		if( cx != null && !cx.isEmpty()){
+		if( cx != null && !cx.isEmpty() && !cx.contains(SEPARADOR)){
 			alumno.setCx(cx);
-		}		
+		}
 		
 		return SUCCESS_MOD_ALUMNO;
 	}
@@ -275,7 +283,88 @@ public class GestorPersonas implements IGestorPersonas{
 		return SUCCESS_DEL_ALUMNO;
 	}
     
-    
-    
+	public String escribirPersonas(){
+		try{
+            File f = new File("Personas.txt");
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bfw = new BufferedWriter(fw);
+			Persona miPersona;
+			String linea = null;
+			
+			System.out.println("escribiendo eprsonassss");
+			
+			//Guardo a los profesores y alumnos, utilizando ';' como separador y las constantes para diferenciar el tipo.
+			for( Persona i : listaPersonas){
+				
+				if( i instanceof Profesor){
+					
+					//En getCargo utilizamos el metodo .name() de manera que devuelva el nombre exacto del enum y no el toString().
+					linea = String.join(SEPARADOR, PROFESOR, i.getApellidos(), i.getNombres(), Integer.toString(i.getDni()), ((Profesor) i).getCargo().name());
+				}
+				else if ( i instanceof Alumno ){
+					linea = String.join(SEPARADOR, ALUMNO,i.getApellidos(), i.getNombres(), Integer.toString(i.getDni()), ((Alumno) i).getCx());
+				}
+				
+				//Una vez que determinamos el tipo de persona y sus atributos procedemos a guardar la linea en el buffer.
+				if( linea != null && !linea.isEmpty()){
+					bfw.write(linea);
+					bfw.newLine();
+				}
+			}
+			
+			bfw.close();
+			return WRITE_SUCCESS;
+			
+		}
+		catch(IOException ex){
+			return WRITE_FAIL;
+		}
+	}
+	
+	public String leerPersonas(){
+		try{
+            File f = new File("Personas.txt");
+            FileReader fr = new FileReader(f);
+            BufferedReader bfr = new BufferedReader(fr);
+			String linea[] = new String[5];
+			GestorPersonas gestor = GestorPersonas.instanciar();
+			
+			//Almaceno la linea en la primera parte y luego la desgloso segun el separador.
+			while( ( linea[0] = bfr.readLine() )!= null ){
+                
+				//Desgloso la linea y obtengo los campos, luego armo la persona a partir de eso.
+				//En el caso que la linea obtenida sea defectuosa por alguna razon la persona
+				//Simplemente no se va a cargar por que nuevoProfesor/Alumno se encarga de eso.
+				
+				linea = linea[0].split(SEPARADOR,5);
+				
+				try{ //Hago un catch al caso que el cargo no coincida con uno existente o que al parser no le pasen un int de numeros puros.
+				
+					if( linea[0].equals(PROFESOR)){
+						System.out.println(gestor.nuevoProfesor(linea[1], linea[2], Integer.parseInt(linea[3]), Cargo.valueOf(linea[4])));
+					}
+					else if( linea[0].equals(ALUMNO)){
+						System.out.println(gestor.nuevoAlumno(linea[1], linea[2], Integer.parseInt(linea[3]), linea[4]));
+					}
+				}
+				catch(NumberFormatException ex){
+					System.out.println("El DNI de una de las personas esta mal guardado!");
+				}
+				catch(IllegalArgumentException ex){
+					System.out.println("El Cargo de la persona esta mal guardado!");
+				}
+            }
+			
+			bfr.close();
+			return READ_SUCCESS;
+		}
+		catch(IOException ex){
+			return READ_FAIL;
+		}
+		catch(PatternSyntaxException EX){
+			System.out.println("El archivo esta corrupto!!!!");
+			return READ_FAIL;
+		}
+	}
     
 }
