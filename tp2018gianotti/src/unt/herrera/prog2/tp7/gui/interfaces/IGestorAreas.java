@@ -25,4 +25,11 @@ public interface IGestorAreas {
     static public String SUCCESS_MSG = "El area fue creada exitosamente.";
     static public String ERROR_DEL = "El area no se pudo borrar.";
     static public String SUCCESS_DEL = "El area fue borrada exitosamente.";
+	
+	static public final String READ_SUCCESS = "La lectura de areas fue exitosa";
+	static public final String WRITE_SUCCESS = "La escritura de areas fue exitosa";
+	static public final String READ_FAIL = "La lectura de areas fallo";
+	static public final String WRITE_FAIL = "la escritura de areas fallo";
+	
+	
 }

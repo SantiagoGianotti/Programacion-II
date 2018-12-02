@@ -132,7 +132,7 @@ public class GestorAreas implements IGestorAreas {
         return ERROR_DEL;
     }
     
-    public void escribirAreas(){
+    public String escribirAreas(){
         try {
             File f = new File("Areas.txt");
             FileWriter fw = new FileWriter(f);
@@ -143,14 +143,14 @@ public class GestorAreas implements IGestorAreas {
             }
             
             bfw.close();
-            System.out.println("escrito correctamente?");
+			return WRITE_SUCCESS;
         } catch (IOException ex) {
-            System.out.println("no se puido crear el archivo gil");
+			return WRITE_FAIL;
         }
     }
    
     
-    public void leerAreas(){
+    public String leerAreas(){
         String nombreArea;
         
         try {
@@ -159,19 +159,16 @@ public class GestorAreas implements IGestorAreas {
             BufferedReader bfr = new BufferedReader(fr);
             Area miArea;
             
-            
             while( ( nombreArea = bfr.readLine() )!= null ){
                 
                 GestorAreas.instanciar().nuevaArea(nombreArea);
             }
-            
-            
-            
+         
             bfr.close();
-            System.out.println("escrito correctamente?");
+            return READ_SUCCESS;
         }
         catch (IOException ex) {
-            System.out.println("no se puido crear el archivo gil");
+            return READ_FAIL;
         }
     }
     
