@@ -44,12 +44,6 @@ CONSULTA:
  */
 public class Principal {
     public static void main (String Args[] ) { 
-		/*
-        ArrayList<Trabajo> listaTrabajos = new ArrayList<>(); // Borrar esto en un futuro.
-        ArrayList<Persona> listaPersonas = new ArrayList<>();
-        ArrayList<Area> listaAreas =new ArrayList<> ();
-		
-		*/
 		GestorAreas miGestorArea;
 		GestorPersonas miGestorPersonas;
 		GestorTrabajos miGestorTrabajos;
@@ -72,6 +66,7 @@ public class Principal {
         System.out.println("mandamos la gilada a un archivo");
         miGestorArea.leerAreas();
     */
+		miGestorArea.escribirAreas();
 	
         ArrayList<Area> listaA1= new ArrayList<>();
         listaA1.add(miGestorArea.dameArea("Software"));
@@ -110,14 +105,13 @@ public class Principal {
         //PROFESOR
 		
 		System.out.println(miGestorPersonas.leerPersonas());
-//		
+
 		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Juan José", 12345678, Cargo.ASOCIADO)); // Persona 0
 		System.out.println(miGestorPersonas.nuevoProfesor("Diaz", "Juan Pablo", 13345678, Cargo.JTP));
 		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Ana María", 14345678, Cargo.ADJUNTO));
 		System.out.println(miGestorPersonas.nuevoProfesor("San Martin","Jose Manuel", 15345678, Cargo.ADG)); // Persona 3
 		System.out.println(miGestorPersonas.nuevoProfesor("Ortega", "Laura", 16345678, Cargo.ASOCIADO));
 		System.out.println(miGestorPersonas.nuevoProfesor("Rodriguez","Juliana", 15345678, Cargo.TITULAR)); //No lo deberia agregar, comparte doc con San Martin
-
                
         //ALUMNO
 		System.out.println(miGestorPersonas.nuevoAlumno("Musa", "Ezequiel", 34567890, "16345"));// persona 5
@@ -134,7 +128,8 @@ public class Principal {
         
 		//</editor-fold>
 
-		System.out.println(miGestorPersonas.escribirPersonas());
+		miGestorPersonas.escribirPersonas();
+
 		
         System.out.println("\n*** Lista de Personas *** \n ");
         miGestorPersonas.mostrarPersonas();
