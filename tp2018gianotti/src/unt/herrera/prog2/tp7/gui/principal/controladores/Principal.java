@@ -111,26 +111,26 @@ public class Principal {
 		
 		System.out.println(miGestorPersonas.leerPersonas());
 //		
-//		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Juan José", 12345678, Cargo.ASOCIADO)); // Persona 0
-//		System.out.println(miGestorPersonas.nuevoProfesor("Diaz", "Juan Pablo", 13345678, Cargo.JTP));
-//		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Ana María", 14345678, Cargo.ADJUNTO));
-//		System.out.println(miGestorPersonas.nuevoProfesor("San Martin","Jose Manuel", 15345678, Cargo.ADG)); // Persona 3
-//		System.out.println(miGestorPersonas.nuevoProfesor("Ortega", "Laura", 16345678, Cargo.ASOCIADO));
-//		System.out.println(miGestorPersonas.nuevoProfesor("Rodriguez","Juliana", 15345678, Cargo.TITULAR)); //No lo deberia agregar, comparte doc con San Martin
-//
-//               
-//        //ALUMNO
-//		System.out.println(miGestorPersonas.nuevoAlumno("Musa", "Ezequiel", 34567890, "16345"));// persona 5
-//		System.out.println(miGestorPersonas.nuevoAlumno("Martinez", "Ricardo Juan", 34567891, "16343"));
-//		System.out.println(miGestorPersonas.nuevoAlumno("Gimenez", "María José", 34567892, "16344"));
-//		System.out.println(miGestorPersonas.nuevoAlumno("Flores", "Mauricio José", 34567890, "16543")); // Deberia fallar
-//		System.out.println(miGestorPersonas.nuevoAlumno("Campos", "Juan Pablo", 34567895, "17345")); // persona 8
-//		System.out.println(miGestorPersonas.nuevoAlumno("Campos", "Augusto", 15345678, "17348")); //Deberia fallar
-//		System.out.println(miGestorPersonas.nuevoAlumno("Rodriguez", "Miguel Angel", 34567852, "17346")); // persona 9
-//		System.out.println(miGestorPersonas.nuevoAlumno("Alvarez", "Ezequiel", 44567890, "16345")); //Deberia fallar
-//		System.out.println(miGestorPersonas.nuevoAlumno("Aguero", "Luciana", 45567890, "17349")); // persona 10
-//		System.out.println(miGestorPersonas.nuevoAlumno("Campos Figueroa", "Juana", 46567890, "16345")); //Deberia fallar		
-//		System.out.println(miGestorPersonas.nuevoAlumno("Apud", "Josefina", 45367890, "18345"));
+		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Juan José", 12345678, Cargo.ASOCIADO)); // Persona 0
+		System.out.println(miGestorPersonas.nuevoProfesor("Diaz", "Juan Pablo", 13345678, Cargo.JTP));
+		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Ana María", 14345678, Cargo.ADJUNTO));
+		System.out.println(miGestorPersonas.nuevoProfesor("San Martin","Jose Manuel", 15345678, Cargo.ADG)); // Persona 3
+		System.out.println(miGestorPersonas.nuevoProfesor("Ortega", "Laura", 16345678, Cargo.ASOCIADO));
+		System.out.println(miGestorPersonas.nuevoProfesor("Rodriguez","Juliana", 15345678, Cargo.TITULAR)); //No lo deberia agregar, comparte doc con San Martin
+
+               
+        //ALUMNO
+		System.out.println(miGestorPersonas.nuevoAlumno("Musa", "Ezequiel", 34567890, "16345"));// persona 5
+		System.out.println(miGestorPersonas.nuevoAlumno("Martinez", "Ricardo Juan", 34567891, "16343"));
+		System.out.println(miGestorPersonas.nuevoAlumno("Gimenez", "María José", 34567892, "16344"));
+		System.out.println(miGestorPersonas.nuevoAlumno("Flores", "Mauricio José", 34567890, "16543")); // Deberia fallar
+		System.out.println(miGestorPersonas.nuevoAlumno("Campos", "Juan Pablo", 34567895, "17345")); // persona 8
+		System.out.println(miGestorPersonas.nuevoAlumno("Campos", "Augusto", 15345678, "17348")); //Deberia fallar
+		System.out.println(miGestorPersonas.nuevoAlumno("Rodriguez", "Miguel Angel", 34567852, "17346")); // persona 9
+		System.out.println(miGestorPersonas.nuevoAlumno("Alvarez", "Ezequiel", 44567890, "16345")); //Deberia fallar
+		System.out.println(miGestorPersonas.nuevoAlumno("Aguero", "Luciana", 45567890, "17349")); // persona 10
+		System.out.println(miGestorPersonas.nuevoAlumno("Campos Figueroa", "Juana", 46567890, "16345")); //Deberia fallar		
+		System.out.println(miGestorPersonas.nuevoAlumno("Apud", "Josefina", 45367890, "18345"));
         
 		//</editor-fold>
 
