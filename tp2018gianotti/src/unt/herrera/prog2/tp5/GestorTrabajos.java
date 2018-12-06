@@ -152,7 +152,9 @@ public class GestorTrabajos implements IGestorTrabajos{
 		// VERIFICO LOS PARAMETROS.
 		
 		if(titulo.isEmpty()){
-			return null;
+			//Me aseguro que los trabajos no tengan nada y paso la lista.
+			misTrabajos.clear();
+			return misTrabajos;
 		}
 		
 		// VERIFICO QUE EL STRING ESTE CONTENIDA EN EL TITULO.
