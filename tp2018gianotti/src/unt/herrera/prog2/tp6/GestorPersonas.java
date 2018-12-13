@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- * @author gabinete
+ * * @author gabinete
  */
 public class GestorPersonas implements IGestorPersonas{
     private static GestorPersonas gestor;

@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package unt.herrera.prog2.tp7.gui.principal.controladores;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,35 +7,31 @@ import unt.herrera.prog2.tp7.gui.areas.modelos.Area;
 import unt.herrera.prog2.tp7.gui.personas.modelos.Cargo;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.GestorAlumnoEnTrabajo;
 import unt.herrera.prog2.tp7.gui.areas.modelos.GestorAreas;
+import unt.herrera.prog2.tp7.gui.personas.modelos.Alumno;
 import unt.herrera.prog2.tp7.gui.personas.modelos.GestorPersonas;
+import unt.herrera.prog2.tp7.gui.personas.modelos.Profesor;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.GestorRolEnTrabajo;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.GestorTrabajos;
 import unt.herrera.prog2.tp7.gui.seminarios.modelos.NotaAprobacion;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.Rol;
 import unt.herrera.prog2.tp7.gui.trabajos.modelos.RolEnTrabajo;
+import unt.herrera.prog2.tp7.gui.trabajos.modelos.Trabajo;
 
-/*
-CONSULTA:
-		1)	En los metodos para mostrar que involucran AlumnoEnTrabajo y RolEnTrabajo cuyas personas ya se retiraron del trabajo
-			validamente con alguna razon y todo eso, los sigo mostrando, los muestro indicando que salieron del trabajo o los
-			dejo de imprimir junto con el trabajo?.
-		2)	Esta bien la manera en la que borro alumnos/profesores? Basicamente los estoy sacando de la lista y si no hay ninguna otra
-			referencia que apunte hacia ellos deberian ser recolectados por el garbage collector.
-		3)	Cuando el trabajo esta finalizado, para "liberar" a mis alumnos y profesores los borro de la lista o indico que
-			tienen una razon ( terminaron el trabajo ) y pongo la fecha de exposicion como finalizado?.
-		4)	En el caso de finalizar alumno falta el control de que fechaHasta debe ser posterior a fechaDesde
-		5)	Preguntar bien la relacion de tutor/cotutor/jurado por que no esta clara del todo y creo que podria ser mas sencilla
-			de la que tengo actualmente.
-		6)	En finalizar trabajo estoy con la duda si tiene que existir un seminario aprobado o una fecha de aprobacion, o
-			si el trabajo puede estar finalizado sin fechaAprobacion.
-		7)	Manejo de errores en la lectura del archivo: Cual es la manera mas apropiada de hacerlo para mi caso para no terminar
-			haciendo un nesting innecesario y dificil de leer. Tengo que atrapar varios errores de distintos tipos a la vez.
-*/
+
 
 /**
- *
- * @author mariana
+ * @author Gianotti
  */
+
+/*
+	Aclaracion!
+	Estan todos los controles adicionales comentados y bajo editor folds.
+	Recomendaria que si no los van a usar simplemente los minimizen y el main queda un poco mas lejible.
+	Si los quieren utilizar estan todos los controles comentados y lo que deberia suceder con cada uno.
+
+*/
+
+
 public class Principal {
     public static void main (String Args[] ) { 
 		GestorAreas miGestorArea;
@@ -50,53 +40,80 @@ public class Principal {
 		GestorRolEnTrabajo miGestorDeRoles;
 		GestorAlumnoEnTrabajo miGestorDeAlumnos;
 		
+		//*** MANEJO DE CONTROLES! ****
+		/*
+		Aca defino las constantes para habilitar los controles adicionales utilizados
+		durante el testeo de las funciones mientras hice el practico.
+		Cada control esta detallado y para habilitarlos solo hay que poner true en cada constante.
+		
+		*/
+		boolean controlesDeAreas = false; //Lineas 103-112
+		boolean controlesDePersonas = false; //Lineas 169-185
+		boolean controlesDeTrabajos = false; //Lineas 191-229 y Lineas 450-508
+		boolean controlesMetodosDeTrabajo = false; //Lineas 327-356
+		boolean controlesDeSeminarios = false; //Lineas 401-447
+		boolean ultimosControles = false; //Lineas 510-521
+		
+		//*****************************
+		
+		
+		
         //***************************Areas**********************************
 		
 		miGestorArea = GestorAreas.instanciar();
 		
 	//<editor-fold desc="Agregado de areas">
 	
+	//Leemos las areas almacenadas en el archivo, si es que existe.
+	System.out.println("*****LECTURA DE AREAS DEL ARCHIVO*****");
+	System.out.println(miGestorArea.leerAreas());
+	System.out.println("*****FIN DE LECTURA DE AREAS DEL ARCHIVO*****\n\nAgregado en el main de areas:\n");
+		
+	
+	//SI LAS AREAS YA ESTAN EN EL ARCHIVO ES NORMAL QUE APAREZCA QUE NO SE LAS PUDO AGREGAR, YA QUE EXISTIAN DE ANTES.
 	System.out.println(miGestorArea.nuevaArea("Software"));
 	System.out.println(miGestorArea.nuevaArea("Hardware"));
 	System.out.println(miGestorArea.nuevaArea("Sistemas Embebidos"));
 	System.out.println(miGestorArea.nuevaArea("Redes"));
 	System.out.println(miGestorArea.nuevaArea("Redes"));
+	 
 	
-    /*    
-        System.out.println("mandamos la gilada a un archivo");
-        miGestorArea.leerAreas();
-    */
-		miGestorArea.escribirAreas();
-	
-        ArrayList<Area> listaA1= new ArrayList<>();
-        listaA1.add(miGestorArea.dameArea("Software"));
-		
-        ArrayList<Area> listaA2= new ArrayList<>();
-        listaA2.add(miGestorArea.dameArea("Software"));
-        listaA2.add(miGestorArea.dameArea("Hardware"));
-		
-        ArrayList<Area> listaA3= new ArrayList<>();
-        listaA3.add(miGestorArea.dameArea("Redes"));
-		
-		//</editor-fold>
+	//Una vez que sacamos las areas del archivo y agregamos las de arriba las almacenamos de nuevo en el archivo.
+	System.out.println("\n\n*****ALMACENAMOS LAS AREAS DEL ARCHIVO*****");
+	System.out.println(miGestorArea.escribirAreas());
 
-        System.out.println("\n***Lista de Areas *** \n ");
-		miGestorArea.mostrarAreas();
+	ArrayList<Area> listaA1= new ArrayList<>();
+	listaA1.add(miGestorArea.dameArea("Software"));
+
+	ArrayList<Area> listaA2= new ArrayList<>();
+	listaA2.add(miGestorArea.dameArea("Software"));
+	listaA2.add(miGestorArea.dameArea("Hardware"));
+
+	ArrayList<Area> listaA3= new ArrayList<>();
+	listaA3.add(miGestorArea.dameArea("Redes"));
 		
-		//<editor-fold desc="Pruebas adicionales de las funciones de areas ( comentadas )">
-		/*
-		System.out.println("Buscamos por ware");
-		for(Area i : miGestorArea.buscarAreas("ware")){
-			System.out.println(i);
+	//</editor-fold>
+
+    System.out.println("\n***Lista de Areas *** \n ");
+	miGestorArea.mostrarAreas();
+	System.out.println("\n");
+
+		//<editor-fold desc="Pruebas adicionales de las funciones de areas">
+		
+		if(controlesDeAreas){
+			
+			System.out.println("Busqueda parcial por 'ware'");
+			for(Area i : miGestorArea.buscarAreas("ware")){
+				System.out.println(i);
+			}
+
+			System.out.println("busqueda exacta de el area 'Software'");
+			System.out.println(miGestorArea.dameArea("Software"));
 		}
-		
-		System.out.println("Buscamos el area Software");
-		System.out.println(miGestorArea.dameArea("Software"));
-		*/
                 
 		//</editor-fold>
 
-        //***************************PERSONAS**********************************
+    //***************************PERSONAS**********************************
 		
 	miGestorPersonas = GestorPersonas.instanciar();
 		
@@ -104,8 +121,11 @@ public class Principal {
 
         //PROFESOR
 		
-		System.out.println(miGestorPersonas.leerPersonas());
-
+		//Leemos primero las personas del archivo y las agregamos.
+		System.out.println("*****LECTURA DEL ARCHIVO DE PERSONAS*****");
+		System.out.println("\n"+miGestorPersonas.leerPersonas());
+		System.out.println("*****FIN DE LECTURA DEL ARCHIVO DE PERSONAS*****\n\nAgregado de personas en el main:\n");
+		
 		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Juan José", 12345678, Cargo.ASOCIADO)); // Persona 0
 		System.out.println(miGestorPersonas.nuevoProfesor("Diaz", "Juan Pablo", 13345678, Cargo.JTP));
 		System.out.println(miGestorPersonas.nuevoProfesor("Juarez", "Ana María", 14345678, Cargo.ADJUNTO));
@@ -128,10 +148,12 @@ public class Principal {
         
 		//</editor-fold>
 
-		miGestorPersonas.escribirPersonas();
-
+		//Una vez hayamos leido las personas del archivo y agregado manualmente las guardamos.
+		System.out.println("\n\n*****ESCRITURA DE PERSONAS EN EL ARCHIVO*****");
+		System.out.println(miGestorPersonas.escribirPersonas());
 		
-        System.out.println("\n*** Lista de Personas *** \n ");
+		
+        System.out.println("\n\n*** Lista de Personas *** \n ");
         miGestorPersonas.mostrarPersonas();
 		
         System.out.println("\n*** Lista de Profesores *** \n ");
@@ -143,63 +165,66 @@ public class Principal {
         System.out.println("\n\n");
 		
 		//<editor-fold desc="Pruebas adicionales de las funciones de personas ( comentadas )">
-		/*
-		System.out.println("Buscamos Alumnos con filtro: ez");
-		for(Alumno i : miGestorPersonas.buscarAlumnos("ez")){
-			System.out.println(i);
+		
+		if(controlesDePersonas){
+		
+			System.out.println("Buscamos Alumnos con filtro: ez");
+			for(Alumno i : miGestorPersonas.buscarAlumnos("ez")){
+				System.out.println(i);
+			}
+
+			System.out.println("Buscamos al ayudante con su cx: (16345)");
+			System.out.println(miGestorPersonas.dameAlumno("16345")); //Aca imprime a musa
+
+			System.out.println("Buscamos Profesores con filtro: z"); // juareZ, juareZ, diaZ
+			for(Profesor i : miGestorPersonas.buscarProfesores("z")){
+				System.out.println(i);
+			}
+
+			System.out.println("Buscamos al general san martin");
+			System.out.println(miGestorPersonas.dameProfesor(15345678)); // San martin
 		}
 		
-		System.out.println("Buscamos al ayudante con su cx: (16345)");
-		System.out.println(miGestorPersonas.dameAlumno("16345")); //Aca imprime a musa
-		
-		System.out.println("Buscamos Profesores con filtro: z"); // juareZ, juareZ, diaZ
-		for(Profesor i : miGestorPersonas.buscarProfesores("z")){
-			System.out.println(i);
-		}
-		
-		System.out.println("Buscamos al general san martin");
-		System.out.println(miGestorPersonas.dameProfesor(15345678)); // San martin
-		*/
 		//</editor-fold>
 		
 		
 		//<editor-fold desc="Pruebas parte 2 ( comentadas )">
 		// PRUEBAS PARTE 2
 		
-		/*
-		Alumno ref1 = miGestorPersonas.dameAlumno("18345"); // Apud Josefina	
-		
-		//Deberia fallar por pasar todo nulo.
-		System.out.println("1: " + miGestorPersonas.modificarAlumno(ref1, null, null, null));
-		System.out.println(ref1);
-		
-		//Deberia cambiar el apellido a gonzales
-		System.out.println("2: " + miGestorPersonas.modificarAlumno(ref1, "Gonzales", null, null));	
-		System.out.println(ref1);
-		
-		//Deberia el nombre a Jose Luis
-		System.out.println("3: " + miGestorPersonas.modificarAlumno(ref1, null, "Jose Luis", null));
-		System.out.println(ref1);
-		
-		//Deberia cambiar el cx a 12345
-		System.out.println("4: " + miGestorPersonas.modificarAlumno(ref1, null, null, "12345"));
-		System.out.println(ref1);
-		
-		//Deberia cambiar todo a Sanchez, Miguel, 12341
-		System.out.println("4: " + miGestorPersonas.modificarAlumno(ref1, "Gomez", "Miguel", "12341"));
-		System.out.println(ref1);
-		
-		//Deberia borrar exitosamente el alumno.
-		System.out.println("5: " + miGestorPersonas.borrarAlumno(miGestorPersonas.dameAlumno("12341")));
-		System.out.println("Gomez en referencia: " + ref1);
-		System.out.println("Gomez en lista: " + miGestorPersonas.dameAlumno("12341"));
-		ref1 = null; //Borro toda referencia de sanchez asi se borra del todo.
-		
-		//Volvemos a poner al alumno como era anteriormente
-		System.out.println("6: " + miGestorPersonas.nuevoAlumno("Apud", "Josefina", 45367890, "18345")+"\n");
-		miGestorPersonas.mostrarAlumnos();
-		System.out.println("\n\n");
-		*/
+		if(controlesDePersonas){
+			Alumno ref1 = miGestorPersonas.dameAlumno("18345"); // Apud Josefina	
+
+			//Deberia fallar por pasar todo nulo.
+			System.out.println("1: " + miGestorPersonas.modificarAlumno(ref1, null, null, null));
+			System.out.println(ref1);
+
+			//Deberia cambiar el apellido a gonzales
+			System.out.println("2: " + miGestorPersonas.modificarAlumno(ref1, "Gonzales", null, null));	
+			System.out.println(ref1);
+
+			//Deberia el nombre a Jose Luis
+			System.out.println("3: " + miGestorPersonas.modificarAlumno(ref1, null, "Jose Luis", null));
+			System.out.println(ref1);
+
+			//Deberia cambiar el cx a 12345
+			System.out.println("4: " + miGestorPersonas.modificarAlumno(ref1, null, null, "12345"));
+			System.out.println(ref1);
+
+			//Deberia cambiar todo a Sanchez, Miguel, 12341
+			System.out.println("4: " + miGestorPersonas.modificarAlumno(ref1, "Gomez", "Miguel", "12341"));
+			System.out.println(ref1);
+
+			//Deberia borrar exitosamente el alumno.
+			System.out.println("5: " + miGestorPersonas.borrarAlumno(miGestorPersonas.dameAlumno("12341")));
+			System.out.println("Gomez en referencia: " + ref1);
+			System.out.println("Gomez en lista: " + miGestorPersonas.dameAlumno("12341"));
+			ref1 = null; //Borro toda referencia de sanchez asi se borra del todo.
+
+			//Volvemos a poner al alumno como era anteriormente
+			System.out.println("6: " + miGestorPersonas.nuevoAlumno("Apud", "Josefina", 45367890, "18345")+"\n");
+			miGestorPersonas.mostrarAlumnos();
+			System.out.println("\n\n");
+		}
 		
 		//</editor-fold>	
 		
@@ -299,8 +324,8 @@ public class Principal {
 		
 		miGestorTrabajos.mostrarTrabajos();	
 		
-		//<editor-fold desc="Controles Adicionales">
-		/*	
+		//<editor-fold desc="Controles de los metodos de trabajo.">
+		if(controlesMetodosDeTrabajo){
 			//finalizo un alumno del trabajo 1. Primero falla luego entra bien.
 			Trabajo refTrab1 = miGestorTrabajos.buscarTrabajos().get(0);
 			Alumno refAl1 = miGestorPersonas.dameAlumno("16345");
@@ -322,13 +347,15 @@ public class Principal {
 			System.out.println("1: " + miGestorTrabajos.reemplazarProfesor(refTrab1, refTrab1.getRolesEnTrabajo().get(0).getUnProfesor(), fecha6, "Capo maximo", refProf1));
 
 			refTrab1.mostrar();
-		*/	
+		}	
 		//</editor-fold>
 		
         //*****************************TRABAJOS***********************************
  
         System.out.println("\n*** Agregar Jurado al Trabajo *** \n ");
-        //AGREGAR JURADO, FECHA APROBACION
+		
+		
+    //AGREGAR JURADO, FECHA APROBACION
 	//<editor-fold desc="Agregar jurado">
 		
         RolEnTrabajo rt42 = miGestorDeRoles.nuevoRolEnTrabajo(miGestorPersonas.dameProfesor(15345678), Rol.JURADO, fecha4); // persona 3
@@ -346,8 +373,8 @@ public class Principal {
 
 		
         System.out.println("\n*** Agregar Jurado al Trabajo *** \n ");
-        //AGREGAR JURADO, FECHA APROBACION
 		
+    //AGREGAR JURADO, FECHA APROBACION
 	//<editor-fold desc="Agregar Jurado">
         RolEnTrabajo rt22 = miGestorDeRoles.nuevoRolEnTrabajo(miGestorPersonas.dameProfesor(13345678), Rol.JURADO, fecha4); // persona 1
         RolEnTrabajo rt23 = miGestorDeRoles.nuevoRolEnTrabajo(miGestorPersonas.dameProfesor(15345678), Rol.JURADO, fecha4); // persona 3
@@ -371,60 +398,59 @@ public class Principal {
         System.out.println("\n*** TRABAJOS CON Seminario *** \n ");
         miGestorTrabajos.buscarTrabajos().get(2).mostrar();
 		
-		//<editor-fold desc="Controles de seminarios extra (Comentados)">
-		/*
+		//<editor-fold desc="Controles de seminarios">
+		if(controlesDeSeminarios){
 		
-		// Paso fecha nula, falla
-		Trabajo ref2 = miGestorTrabajos.buscarTrabajos().get(2);
-		
-		System.out.println("1: " + ref2.nuevoSeminario(fecha2, NotaAprobacion.APROBADO_SINOBS, null));
- 
-		//Paso fecha posterior a la de aprobacion
-		System.out.println("2: " + ref2.nuevoSeminario(fecha4, NotaAprobacion.APROBADO_SINOBS, null));
+			// Paso fecha nula, falla
+			Trabajo ref2 = miGestorTrabajos.buscarTrabajos().get(2);
 
-		//Paso la nota de aprobacion nula
-		System.out.println("3: " + ref2.nuevoSeminario(fecha6, null, null));
- 
-		//Falla por falta de obs
-		System.out.println("4: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.APROBADO_CONOBS, null));
- 		
-		//Falla por falta de obs
-		System.out.println("5: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, null));
- 
-		//Falla por obs vacia
-		System.out.println("6: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.APROBADO_CONOBS, ""));
- 		
-		//pasa bien!
-		System.out.println("7: " + ref2.nuevoSeminario(fecha3, NotaAprobacion.APROBADO_CONOBS, "Soy una observacion"));
+			System.out.println("1: " + ref2.nuevoSeminario(fecha2, NotaAprobacion.APROBADO_SINOBS, null));
 
-		//pasa bien!
-		System.out.println("8: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, "Aca me clavaron"));
+			//Paso fecha posterior a la de aprobacion
+			System.out.println("2: " + ref2.nuevoSeminario(fecha4, NotaAprobacion.APROBADO_SINOBS, null));
+
+			//Paso la nota de aprobacion nula
+			System.out.println("3: " + ref2.nuevoSeminario(fecha6, null, null));
+
+			//Falla por falta de obs
+			System.out.println("4: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.APROBADO_CONOBS, null));
+
+			//Falla por falta de obs
+			System.out.println("5: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, null));
+
+			//Falla por obs vacia
+			System.out.println("6: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.APROBADO_CONOBS, ""));
+
+			//pasa bien!
+			System.out.println("7: " + ref2.nuevoSeminario(fecha3, NotaAprobacion.APROBADO_CONOBS, "Soy una observacion"));
+
+			//pasa bien!
+			System.out.println("8: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, "Aca me clavaron"));
+
+			//no pasa por repeticion de fechas.
+			System.out.println("9: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, "Aca me clavaron"));
+
+			ref2.mostrar();
+
+			// modifico el seminario de "7" y lo dejo como desaprobado ( falla por q no hay obs )
+			System.out.println("MOD A 7: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.DESAPROBADO, null));		
+
+			// modifico el seminario de "7" y lo dejo como desaprobado
+			System.out.println("MOD A 7: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.DESAPROBADO, "En realidad en este me clavaron!"));
+
+			// modifico el seminario de "8" y lo dejo como aprobado sin obs
+			System.out.println("MOD A 8: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.APROBADO_SINOBS, null));
+
+			ref2.mostrar();
 		
-		//no pasa por repeticion de fechas.
-		System.out.println("9: " + ref2.nuevoSeminario(fecha6, NotaAprobacion.DESAPROBADO, "Aca me clavaron"));
-		
-		ref2.mostrar();
-		
-		// modifico el seminario de "7" y lo dejo como desaprobado ( falla por q no hay obs )
-		System.out.println("MOD A 7: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.DESAPROBADO, null));		
-		
-		// modifico el seminario de "7" y lo dejo como desaprobado
-		System.out.println("MOD A 7: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.DESAPROBADO, "En realidad en este me clavaron!"));
-		
-		// modifico el seminario de "8" y lo dejo como aprobado sin obs
-		System.out.println("MOD A 8: " + ref2.modificarSeminario(ref2.getSeminarios().get(0), NotaAprobacion.APROBADO_SINOBS, null));
-	
-		ref2.mostrar();
-		
-		*/
+		}
 		//</editor-fold>
 
 	//**********************CONTROLES ADICIONALES**********************
-		//<editor-fold desc="Controles Adicionales ( comentados )">
-		//Creo el trabajo numero 4 ( ya que el anterior siempre falla pero tiene creada algunas listas.)
-		/*
+	//<editor-fold desc="Controles de gestor de Trabajos">
+	//Creo el trabajo numero 4 ( ya que el anterior siempre falla pero tiene creada algunas listas.)
 		
-		
+	if(controlesDeTrabajos){
 		//La duracion es negativa y falla
 		System.out.println( "1: " + miGestorTrabajos.nuevoTrabajo("Soy un trabajo que siempre falla!", -1, fecha5, null, listaA1, listaRT4, listaAeT4) );
 
@@ -476,23 +502,21 @@ public class Principal {
                 
                 //Checkeo las areas.
                 System.out.println("Yo fallo: " + miGestorArea.borrarArea(miGestorArea.dameArea("Hardware")));
-                System.out.println("Yo no fallo: " + miGestorArea.borrarArea(miGestorArea.dameArea("Sistemas Embebidos")));
- 
-                
-                */
+                System.out.println("Yo no fallo: " + miGestorArea.borrarArea(miGestorArea.dameArea("Sistemas Embebidos"))); 
+	}
 		
-		//</editor-fold>
+	//</editor-fold>
        
-		//<editor-fold desc="Mas Controles! (comentados)">
-		/*
-		
-		//borro protocolos de comuninacion.
-		System.out.println("1: " + miGestorTrabajos.borrarTrabajo(miGestorTrabajos.buscarTrabajos().get(0)));
-		
-		System.out.println("2: " + miGestorTrabajos.finalizarTrabajo(miGestorTrabajos.buscarTrabajos().get(0), fecha1));
-				
-		miGestorTrabajos.mostrarTrabajos();
-		*/
-		//</editor-fold>
+	//<editor-fold desc="Ultimos controles">
+		if(ultimosControles){
+
+			//borro protocolos de comuninacion.
+			System.out.println("1: " + miGestorTrabajos.borrarTrabajo(miGestorTrabajos.buscarTrabajos().get(0)));
+
+			System.out.println("2: " + miGestorTrabajos.finalizarTrabajo(miGestorTrabajos.buscarTrabajos().get(0), fecha1));
+
+			miGestorTrabajos.mostrarTrabajos();
+		}
+	//</editor-fold>
     } 
 }
